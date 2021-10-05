@@ -74,7 +74,7 @@ export class ShowTableComponent implements OnInit {
         this.controlFirtsPagination = this.controlFirtsPagination - 10;
         this.dataListShow = this.dataListFilter.slice(this.controlLastPagination - (10 + this.lastPaginationNumber), this.controlLastPagination - (this.lastPaginationNumber));
         this.controlLastPagination = this.controlLastPagination - this.lastPaginationNumber;
-        this.isLastPageShow = true;
+        this.isLastPageShow = false;
       } else {
         // Paginación normal hacia detras
         this.controlFirtsPagination = this.controlFirtsPagination - 10;
