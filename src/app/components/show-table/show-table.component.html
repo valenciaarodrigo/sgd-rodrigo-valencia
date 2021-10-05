@@ -1,5 +1,8 @@
+<!-- Contenedor principal-->
 <div class="content" *ngIf="literals">
   <h1>{{literals.titleMovies}}</h1>
+
+  <!-- Componente para el filtrado-->
   <div class="filter-data">
     <app-filter-data
       [literals]="literals"
@@ -9,22 +12,24 @@
     </app-filter-data>
   </div>
 
+  <!-- Paginación de la tabla-->
   <div *ngIf="dataListShow && dataListShow.length > 0" class="paginator">
     <span>{{literals.paginatorShow}} {{controlFirtsPagination}} {{literals.paginatorA}} {{controlLastPagination}} {{literals.paginatorThe}} {{dataListFilter.length}}</span> |
         <button (click)="showPage('previous')" [disabled]="disabledPaginator('previous')">{{literals.paginatorPrevious}}</button> |
         <button (click)="showPage('next')" [disabled]="disabledPaginator('next')">{{literals.paginatorNext}}</button>
   </div>
 
+  <!-- Tabla-->
   <div *ngIf="dataListShow && dataListShow.length > 0">
     <table class="table-width" >
       <thead>
           <tr>
-              <td class="cell-long">{{literals.tableTitle}}</td>
-              <td class="cell-small">{{literals.tableYear}}</td>
-              <td class="cell-medium">{{literals.tableDirector}}</td>
-              <td class="cell-medium">{{literals.tableCast}}</td>
-              <td class="cell-medium">{{literals.tableGender}}</td>
-              <td class="cell-long">{{literals.tableNotes}}</td>
+              <td class="cell-long">{{literals.tableTitle}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('title')"></i></td>
+              <td class="cell-small">{{literals.tableYear}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('year')"></i></td>
+              <td class="cell-medium">{{literals.tableDirector}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('director')"></i></td>
+              <td class="cell-medium">{{literals.tableCast}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('cast')"></i></td>
+              <td class="cell-medium">{{literals.tableGender}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('genre')"></i></td>
+              <td class="cell-long">{{literals.tableNotes}} <i class="fas fa-sort" style="cursor: pointer;" (click)="orderColumn('notes')"></i></td>
           </tr>
       </thead>
       <tbody>
@@ -41,6 +46,7 @@
       </table>
   </div>
 
+  <!-- Mensaje informativo de no obtencion de resultados al filtrar -->
   <div *ngIf="dataListShow && dataListShow.length <= 0 && controlLastPagination === 0" class="paginator">
     <img src="../../assets/sin_resultados.png" class="img-thumbnail">
     <h2>Sin resultados, vuelva aplicar un nuevo filtro o resetea el filtro</h2>

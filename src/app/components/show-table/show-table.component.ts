@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Movies } from 'src/app/bean/movies';
+import { ActionsPaginator, ConstantsType } from 'src/app/constants/constants';
 import { ConsultDataService } from 'src/app/services/consult-data.service';
+import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-show-table',
@@ -33,17 +35,18 @@ export class ShowTableComponent implements OnInit {
   // Lista de literales en configuración
   public literals: any;
 
-  public static PREVIOUS: String = "previous"
-
-  public static NEXT: String = "next"
+  // Variable para controlar ordenado ascendente, descendente
+  public flagOrder: boolean = true;
 
   constructor(
-    private consultDataService : ConsultDataService
-  ) { }
+    private _consultDataService : ConsultDataService
+  ) {
+
+  }
 
   ngOnInit(): void {
     // Utilizamos el servicio para traernos la informacion del json, donde contendra todas las peliculas
-    this.consultDataService.getJSON().subscribe(data => {
+    this._consultDataService.getJSON().subscribe(data => {
       // Obtenemos todos los datos y los almacenamos en memoria
       this.dataListAll = data;
       // Obtenemos los datos a mostrar
@@ -53,7 +56,7 @@ export class ShowTableComponent implements OnInit {
     });
 
     // Utilizamos el servicio que nos devuelve los literales
-    this.consultDataService.getLiteral().subscribe(data => {
+    this._consultDataService.getLiteral().subscribe(data => {
       this.literals = data;
     });
   }
@@ -63,13 +66,15 @@ export class ShowTableComponent implements OnInit {
    * @param $event
    */
   showPage($event: string) {
-    if ($event === ShowTableComponent.PREVIOUS) {
+    // Resteamos la varible para ordenar
+    this.flagOrder = true;
+    if ($event === ActionsPaginator.ACTIONS_PAGINATOR_PREVIOUS) {
       // Si venimos de una paginación que era la ultima
       if (this.isLastPageShow) {
         this.controlFirtsPagination = this.controlFirtsPagination - 10;
         this.dataListShow = this.dataListFilter.slice(this.controlLastPagination - (10 + this.lastPaginationNumber), this.controlLastPagination - (this.lastPaginationNumber));
         this.controlLastPagination = this.controlLastPagination - this.lastPaginationNumber;
-        this.isLastPageShow = false;
+        this.isLastPageShow = true;
       } else {
         // Paginación normal hacia detras
         this.controlFirtsPagination = this.controlFirtsPagination - 10;
@@ -78,13 +83,14 @@ export class ShowTableComponent implements OnInit {
       }
     } else {
       this.controlFirtsPagination = this.controlLastPagination + 1;
-      // Controlamos el fin del paginado
+      // Controlamos el fin del paginado, por si el siguiente paginado es el ultimo
       if ((this.controlLastPagination + 10) > this.dataListFilter.length) {
         this.lastPaginationNumber = this.dataListFilter.length - this.controlLastPagination;
         this.dataListShow = this.dataListFilter.slice(this.controlLastPagination, this.controlLastPagination + this.lastPaginationNumber);
         this.controlLastPagination = this.controlLastPagination + this.lastPaginationNumber;
         this.isLastPageShow = true;
       } else {
+        // Paginacion normal hacia delante
         this.dataListShow = this.dataListFilter.slice(this.controlLastPagination, this.controlLastPagination + 10);
         this.controlLastPagination = this.controlLastPagination + 10;
         this.isLastPageShow = false;
@@ -100,7 +106,7 @@ export class ShowTableComponent implements OnInit {
    */
   disabledPaginator($event: string): boolean {
     let result = true
-    if ($event === ShowTableComponent.PREVIOUS) {
+    if ($event === ActionsPaginator.ACTIONS_PAGINATOR_PREVIOUS) {
      if (this.controlLastPagination > 10) {
        result = false;
      }
@@ -119,6 +125,8 @@ export class ShowTableComponent implements OnInit {
   propagationFilter($event: any) {
     // Obtenemos la lista filtrada que nos ha enviado el componente filter-data
     this.dataListFilter = $event;
+    // Resteamos la varible para ordenar
+    this.flagOrder = true;
     // Comprobamos si obtiene resultados
     if (this.dataListFilter.length > 0) {
       if (this.dataListFilter.length < 10) {
@@ -140,6 +148,14 @@ export class ShowTableComponent implements OnInit {
       this.controlLastPagination = 0;
       this.dataListShow = this.dataListFilter;
     }
+  }
+
+  /**
+   * Funcion para la ordenación por columna de los elementos mostrados
+   */
+  orderColumn($event: any) {
+    this.dataListShow = Utils.orderColum(this.dataListShow, this.flagOrder, $event);
+    this.flagOrder = !this.flagOrder;
   }
 
 }
