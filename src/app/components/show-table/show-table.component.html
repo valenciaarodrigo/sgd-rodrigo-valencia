@@ -1,0 +1,48 @@
+<div class="content" *ngIf="literals">
+  <h1>{{literals.titleMovies}}</h1>
+  <div class="filter-data">
+    <app-filter-data
+      [literals]="literals"
+      [dataListAll]="dataListAll"
+      (propagationFilter)="propagationFilter($event)"
+    >
+    </app-filter-data>
+  </div>
+
+  <div *ngIf="dataListShow && dataListShow.length > 0" class="paginator">
+    <span>{{literals.paginatorShow}} {{controlFirtsPagination}} {{literals.paginatorA}} {{controlLastPagination}} {{literals.paginatorThe}} {{dataListFilter.length}}</span> |
+        <button (click)="showPage('previous')" [disabled]="disabledPaginator('previous')">{{literals.paginatorPrevious}}</button> |
+        <button (click)="showPage('next')" [disabled]="disabledPaginator('next')">{{literals.paginatorNext}}</button>
+  </div>
+
+  <div *ngIf="dataListShow && dataListShow.length > 0">
+    <table class="table-width" >
+      <thead>
+          <tr>
+              <td class="cell-long">{{literals.tableTitle}}</td>
+              <td class="cell-small">{{literals.tableYear}}</td>
+              <td class="cell-medium">{{literals.tableDirector}}</td>
+              <td class="cell-medium">{{literals.tableCast}}</td>
+              <td class="cell-medium">{{literals.tableGender}}</td>
+              <td class="cell-long">{{literals.tableNotes}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let data of dataListShow">
+              <td class="cell-long" title="{{data.title}}">{{data.title}}</td>
+              <td class="cell-small" title="{{data.year}}">{{data.year}}</td>
+              <td class="cell-medium" title="{{data.director}}">{{data.director}}</td>
+              <td class="cell-medium" title="{{data.cast}}">{{data.cast}}</td>
+              <td class="cell-medium" title="{{data.genre}}">{{data.genre}}</td>
+              <td class="cell-long" title="{{data.notes}}">{{data.notes}}</td>
+          </tr>
+
+      </tbody>
+      </table>
+  </div>
+
+  <div *ngIf="dataListShow && dataListShow.length <= 0 && controlLastPagination === 0" class="paginator">
+    <img src="../../assets/sin_resultados.png" class="img-thumbnail">
+    <h2>Sin resultados, vuelva aplicar un nuevo filtro o resetea el filtro</h2>
+  </div>
+</div>

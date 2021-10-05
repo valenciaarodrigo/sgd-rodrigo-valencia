@@ -1,0 +1,7 @@
+<!-- Label + Input de texto a filtar -->
+<label for="name">{{literals.filterTitle}}</label>
+<input type="text" id="name" name="name" minlength="3" size="30" [(ngModel)]="textFilter" placeholder="{{literals.filterPlaceHolder}}">
+<!-- Boton aceptar filtro -->
+<input type="button" class="class-button-appy" value="{{literals.filterFilter}}"  (click)="applyFilter()">
+<!-- Boton resetear filtro -->
+<input type="button" class="class-button-reset" value="{{literals.filterReset}}" (click)="resetFilter()">

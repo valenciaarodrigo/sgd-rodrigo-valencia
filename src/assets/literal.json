@@ -1,0 +1,18 @@
+{
+    "titleMovies": "Listado de Películas",
+    "tableTitle": "Título",
+    "tableYear": "Año",
+    "tableDirector": "Director",
+    "tableCast": "Reparto",
+    "tableGender": "Género",
+    "tableNotes": "Notas",
+    "paginatorShow": "Mostrando del ",
+    "paginatorA": "al ",
+    "paginatorThe": "de ",
+    "paginatorPrevious": "Anterior",
+    "paginatorNext": "Siguiente",
+    "filterTitle": "Filtrar por título: ",
+    "filterFilter": "Filtrar",
+    "filterReset": "Reset",
+    "filterPlaceHolder": "Introduce título para la busqueda"
+}
